@@ -100,6 +100,7 @@ static ALWAYS_INLINE unsigned ror64(unsigned x, int s) { return x >> s | x << (6
   #elif _MSC_VER //----------------------------------------------------
 #include <windows.h>
 #include <intrin.h>
+#include <math.h>
     #if _MSC_VER < 1600
 #include "vs/stdint.h"
 #define __builtin_prefetch(x,a)
@@ -194,7 +195,7 @@ static ALWAYS_INLINE void               stof16(      void *cp, _Float16         
 static ALWAYS_INLINE void               stof32(      void *cp, float              x) { memcpy(cp, &x, sizeof(x)); }
 static ALWAYS_INLINE void               stof64(      void *cp, double             x) { memcpy(cp, &x, sizeof(x)); }
 
-static ALWAYS_INLINE void               ltou32(unsigned           *x, const void *cp) { memcpy(x, cp, sizeof(*x)); } // ua read into ptr 
+static ALWAYS_INLINE void               ltou32(unsigned           *x, const void *cp) { memcpy(x, cp, sizeof(*x)); } // ua read into ptr
 static ALWAYS_INLINE void               ltou64(unsigned long long *x, const void *cp) { memcpy(x, cp, sizeof(*x)); }
 
   #elif defined(__i386__) || defined(__x86_64__) || \
@@ -290,7 +291,7 @@ struct _PACKED doubleu   { double             d; };
 #define BZMASK8( _b_)                    BZMASK32(_b_)
 
 #define BZHI64(_u_, _b_)                 ((_u_) & BZMASK64(_b_))  // b Constant
-#define BZHI32(_u_, _b_)                 ((_u_) & BZMASK32(_b_)) 
+#define BZHI32(_u_, _b_)                 ((_u_) & BZMASK32(_b_))
 #define BZHI16(_u_, _b_)                 BZHI32(_u_, _b_)
 #define BZHI8( _u_, _b_)                 BZHI32(_u_, _b_)
 #define BEXTR32(x,start,len)             (((x) >> (start)) & ((1u << (len)) - 1)) //Bit field extract (with register)
@@ -302,7 +303,7 @@ struct _PACKED doubleu   { double             d; };
 #include <x86intrin.h>
       #endif
 #define bzhi32(_u_, _b_)                 _bzhi_u32(_u_, _b_)  // b variable
-#define bextr32(x,start,len)             _bextr_u32(x,start,len)  
+#define bextr32(x,start,len)             _bextr_u32(x,start,len)
 
       #if !(defined(_M_X64) || defined(__amd64__)) && (defined(__i386__) || defined(_M_IX86))
 #define bzhi64(_u_, _b_)                 BZHI64(_u_, _b_)
@@ -310,7 +311,7 @@ struct _PACKED doubleu   { double             d; };
 #define bzhi64(_u_, _b_)                 _bzhi_u64(_u_, _b_)
       #endif
     #else
-#define bzhi64(_u_, _b_)                 BZHI64(_u_, _b_) 
+#define bzhi64(_u_, _b_)                 BZHI64(_u_, _b_)
 #define bzhi32(_u_, _b_)                 BZHI32(_u_, _b_)
 #define bextr32(x,start,len)             (((x) >> (start)) & ((1u << (len)) - 1)) //Bit field extract (with register)
     #endif
